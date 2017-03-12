@@ -1,0 +1,68 @@
+buildscript {
+    repositories {
+        maven { url 'http://mvn1.tools.vipshop.com/nexus/content/groups/public' }
+        maven { url 'http://mvn1.tools.vipshop.com/nexus/content/groups/public-snapshots' }
+        jcenter()
+        maven { url 'http://repo.spring.io/snapshot' }
+        maven { url 'http://repo.spring.io/milestone' }
+    }
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:2.0.0.BUILD-SNAPSHOT'
+    }
+}
+
+allprojects {
+    apply plugin: 'idea'
+    group = 'com.dubbox.demo'
+    version = '1.0-SNAPSHOT'
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+
+    repositories {
+        maven { url 'http://mvn1.tools.vipshop.com/nexus/content/groups/public' }
+        maven { url 'http://mvn1.tools.vipshop.com/nexus/content/groups/public-snapshots' }
+        mavenLocal()
+        jcenter()
+        maven { url "http://repo.spring.io/snapshot" }
+        maven { url "http://repo.spring.io/milestone" }
+    }
+
+    dependencies {
+        compile("org.springframework.boot:spring-boot-starter-web")
+        compile("org.springframework.boot:spring-boot-starter-aop")
+        compile("org.springframework.boot:spring-boot-devtools")
+        compile("com.github.sgroschupf:zkclient:0.1") {
+            exclude group: "log4j", module: "log4j"
+            exclude group: "org.slf4j", module: "slf4j-log4j12"
+        }
+        compile("org.apache.zookeeper:zookeeper:3.4.7") {
+            exclude group: "log4j", module: "log4j"
+            exclude group: "org.slf4j", module: "slf4j-log4j12"
+        }
+        compile("com.alibaba:dubbo:2.8.4") {
+            exclude group: "org.springframework", module: "spring"
+            exclude group: "log4j", module: "log4j"
+        }
+        testCompile("org.springframework.boot:spring-boot-starter-test")
+    }
+
+}
+
+project(':dubbox.server') {
+    dependencies {
+        compile(
+                project(':dubbox.base')
+        )
+    }
+}
+
+project(':dubbox.client') {
+    dependencies {
+        compile(
+                project(':dubbox.base')
+        )
+    }
+}

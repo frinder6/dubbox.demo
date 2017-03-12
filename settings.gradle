@@ -1,0 +1,5 @@
+rootProject.name = 'dubbox.demo'
+include 'dubbox.base'
+include 'dubbox.server'
+include 'dubbox.client'
+
